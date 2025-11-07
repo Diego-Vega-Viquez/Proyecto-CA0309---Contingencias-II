@@ -1,0 +1,149 @@
+\documentclass{article} % A4 paper and 11pt font size
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PAQUETES            											    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[spanish]{babel}
+\linespread{1} % Interlineado
+\usepackage[utf8]{inputenc} % Para poner notas al pie
+\usepackage[hidelinks]{hyperref}
+\usepackage{diegocon}
+\usetikzlibrary{arrows.meta, positioning}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comandos          									  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\yo}{Diego Alberto Vega Víquez}
+\newcommand{\yoCorto}{Diego Vega V.}
+\newcommand{\profesor}{Eny Vargas Ulate}
+\newcommand{\curso}{Contingencias de Vida II}
+\newcommand{\siglaCurso}{CA-0309}
+\newcommand{\grupo}{Grupo \#tal}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Formateo de página            									  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ------------------ MÁRGENES ------------------
+\geometry{
+    left=2.5cm,
+    right=2.5cm,
+    top=2.5cm,
+    bottom=2.5cm
+}
+
+% ------------------ ENCABEZADOS PERSONALIZADOS ------------------
+\fancypagestyle{miestilo}{ 
+    \fancyhf{} 
+    \fancyhead[L]{\grupo}
+    \fancyhead[C]{Proyecto Final}
+    \fancyhead[R]{\siglaCurso}
+    \fancyfoot[L]{Prof. \profesor}
+    \fancyfoot[R]{\thepage}
+}
+
+\begin{document}
+
+% ------------------ PORTADA DEL DOCUMENTO ------------------
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+
+    {\Large\bfseries Universidad de Costa Rica\par}
+    \vspace{0.5cm}
+    {\Large Escuela de Matemática\par}
+    
+    \vspace{2cm}
+    
+    {\Huge\bfseries Proyecto Final\par}
+    \vspace{0.5cm}
+    {\LARGE\siglaCurso : \curso\par}
+    
+    \vspace{2.5cm}
+    
+    {\large \grupo\par}
+    \vspace{0.5cm}
+    {\normalsize José Andrey Prado Rojas\par}
+    {\normalsize \yo\par}
+
+    \vspace{1.5cm}
+    
+    {\large Profesora:\par}
+    \vspace{0.3cm}
+    {\normalsize \profesor\par}
+    
+    \vfill
+    
+    {\normalsize \today\par}
+\end{titlepage}
+
+\clearpage
+\begingroup
+\begin{spacing}{1.05} % Aquí defines el interlineado
+\fontsize{12pt}{15pt}\selectfont
+
+\tableofcontents
+
+\end{spacing}
+\endgroup
+\clearpage 
+
+\newpage
+
+\pagestyle{miestilo}
+
+% ------------ RESUMEN ----------------
+\section*{Resumen}
+Breve descripción del propósito del informe, los métodos empleados (simulación de Monte Carlo y árboles binomiales), los resultados generales y conclusiones clave.
+
+\newpage
+
+% ---------------- INTRODUCCIÓN ----------------
+\section{Introducción}
+Describa el contexto institucional de Smart Investments S.A., los objetivos del análisis y la motivación de diversificar la cartera.
+Mencione el propósito general del proyecto: evaluar la valoración y el riesgo del portafolio mediante simulación y analizar el impacto de una expansión accionaria.
+
+% ---------------- METODOLOGÍA ----------------
+\section{Metodología}
+Explique la construcción de los modelos binomiales conjuntos para colones y dólares, la generación de 10,000 simulaciones de Monte Carlo y los cálculos de VaR y CVaR.
+Incluya ecuaciones relevantes:
+\[
+FX(VaR_p) = \Pr[X \leq VaR_p] = p
+\]
+\[
+CVaR_p(X) = E[X \mid X \geq VaR_p]
+\]
+
+% ---------------- RESULTADOS ----------------
+\section{Resultados}
+\subsection{Sección I: Valoración del portafolio}
+Presente los valores esperados, pesimistas y optimistas del portafolio en los horizontes de 0, 3, 6, 12 y 15 años.
+Incluya tablas y gráficos por moneda (colones y dólares).
+
+\subsection{Sección II: Análisis de expansión accionaria}
+Analice los resultados numéricos al año 15 bajo las estrategias: compra directa, forward, futuro, call europea y call americana.
+Compare los valores finales del portafolio y comente las diferencias en riesgo y retorno.
+
+% ---------------- CONCLUSIONES Y RECOMENDACIONES ----------------
+\section{Conclusiones y recomendaciones}
+Sintetice los principales hallazgos, conclusiones sobre el riesgo del portafolio y recomendaciones sobre la estrategia óptima para Smart Investments.
+
+% ---------------- REFERENCIAS ----------------
+\section*{Referencias}
+\begin{itemize}
+    \item Curvas Cero Cupón (Excel proporcionado por el curso)
+    \item Material de clase: Valoración de Instrumentos Financieros I, II ciclo 2025
+    \item Notas técnicas y bibliografía complementaria (Hull, Wilmott, etc.)
+\end{itemize}
+
+% ---------------- ANEXOS ----------------
+\appendix
+\section{Código fuente y simulaciones}
+Incluya los scripts de R/Python o capturas de los resultados del notebook.
+\section{Tablas adicionales}
+Gráficos, distribuciones y comparaciones detalladas.
+
+\end{document}
+
+\end{document}

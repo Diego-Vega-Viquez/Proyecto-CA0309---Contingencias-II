@@ -1,0 +1,415 @@
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{diegocon}[2025 (Diego Alberto Vega Víquez)]
+\PackageInfo{diegocon}{Comandos para Contingencias de Vida y Simbología matemática asociada}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paquetes que uso									  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{graphicx,verbatim,amsmath,amssymb,amsfonts,amsthm,%
+mathrsfs,cancel,multicol,titlesec,changepage,parskip,blindtext,%
+fancyhdr,geometry,setspace,soul,xcolor,framed,tikz,booktabs,%
+actuarialsymbol,multirow,lscape,array,float,bookmark,hyperref,%
+xparse,ifthen,tabularx,lscape,tcolorbox,setspace,dsfont,enumitem,%
+lmodern,tocloft,textcomp,tikz-cd,parskip,qtree}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paquetes requeridos
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{amsmath}
+\RequirePackage{xparse}
+\RequirePackage{ifthen}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Longitudes internas para construcción de símbolos
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newlength{\LC@temph}
+\newlength{\LC@tempw}
+\newlength{\LC@templ}
+\newlength{\LC@tempwtwo}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Teoremas, Lemas, Corolarios y más entornos
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Entornos numerados por sección:
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{corollary}[theorem]{Corolario}
+\newtheorem{proposition}[theorem]{Proposición} % útil para resultados importantes
+
+% Estilos de definición
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definición}
+\newtheorem{example}[theorem]{Ejemplo}         % para ejemplos
+\newtheorem{notation}[theorem]{Notación}       % para introducir símbolos
+\newtheorem{problem}[theorem]{Problema}        % útil para ejercicios/problemas
+
+% Estilo de observación
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Observación}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comando para techo
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand*{\lcroof}[1]{%
+\settoheight{\LC@temph}{\mbox{$\scriptstyle\overline{#1\,}$}}%
+{\mbox{$\scriptstyle\overline{#1\,}$\kern-0.1pt\rule[-0.35pt]{.3pt}{\LC@temph}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comandos Otros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand*{\lcterm}[3]{%
+\settoheight{\LC@temph}{\mbox{$\scriptstyle\overline{#3\,}$}}%
+\settowidth{\LC@tempw}{$\scriptstyle #2$}%
+{#1}{}_{#2:\lcroof{#3}}^{\makebox[\LC@tempw]{\hfill$\scriptstyle 1$\hfill}}}
+
+\newcommand*{\lctermadj}[3]{%
+\settoheight{\LC@temph}{\mbox{$\scriptstyle\overline{#3\,}$}}%
+\settowidth{\LC@tempw}{$\scriptstyle #2$}%
+{#1}{}_{#2:\lcroof{#3}}^{\makebox[\LC@tempw]{\hfill$\scriptstyle A$\hfill}}}
+
+\newcommand*{\lcend}[3]{%
+\settoheight{\LC@temph}{\mbox{$\scriptstyle\overline{#3\,}$}}%
+\settowidth{\LC@tempw}{$\scriptstyle #3$}%
+\settowidth{\LC@templ}{$\scriptstyle #2$:}%
+{#1}{}_{#2:\lcroof{#3}}^{\hspace{\LC@templ}\makebox[\LC@tempw]{\hfill$\scriptstyle 1$\hfill}}}
+
+\newcommand*{\lcfirst}[4][1]{%
+\settowidth{\LC@tempw}{$\scriptstyle #3$}%
+{#2}{}_{{#3}{#4}}^{\makebox[\LC@tempw]{\hfill$\scriptstyle #1$\hfill}}}
+
+\newcommand*{\lcsecond}[4][2]{%
+\settowidth{\LC@tempw}{$\scriptstyle #4$}%
+\settowidth{\LC@templ}{$\scriptstyle #3$}%
+{#2}{}_{{#3}{#4}}^{\hspace{\LC@templ}\makebox[\LC@tempw]{\hfill$\scriptstyle #1$\hfill}}}
+
+\newcommand*{\lccomptwo}[4]{%
+\settowidth{\LC@tempw}{$\scriptstyle #2$}%
+\settowidth{\LC@templ}{$\scriptstyle #3 #4$}%
+{#1}{}_{\substack{#2 #3 #4\\\makebox[\LC@tempw]{\hfill$\scriptstyle1$\hfill}\hspace{\LC@templ}}}^{\hspace{\LC@tempw}\scriptstyle2}}
+
+\newcommand*{\lccompthree}[5]{%
+\settowidth{\LC@temph}{$\scriptstyle #2$}%
+\settowidth{\LC@tempw}{$\scriptstyle #3$}%
+\settowidth{\LC@tempwtwo}{$\scriptstyle #3$}%
+\settowidth{\LC@templ}{$\scriptstyle #4 #5$}%
+{#1}{}_{\substack{#2 #3 #4 #5\\\makebox[\LC@temph]{\hfill$\scriptstyle 1$\hfill}\makebox[\LC@tempw]{\hfill$\scriptstyle 2$\hfill}\hspace{\LC@templ}}}^{\hspace{\LC@temph}\hspace{\LC@tempw}\makebox[\LC@tempwtwo]{\hfill$\scriptstyle 3$\hfill}}}
+
+\newcommand*{\surstat}[3]{%
+\settowidth{\LC@tempw}{$#2_{1}#2_{2}\dots$}%
+\dfrac{\hspace{\LC@tempw}#1}{#2_{1}#2_{2}\dots#2_{#3}}}
+
+\newcommand*{\defsurstat}[3]{%
+\settowidth{\LC@tempw}{$#2_{1}#2_{2}\dots$}%
+\dfrac{\hspace{\LC@tempw}[#1]}{#2_{1}#2_{2}\dots#2_{#3}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comandos de Seguros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% COMANDOS DE SEGUROS DE VIDA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ------------- Seguro de vida entera (whole life) ------------
+
+% Discreto
+\NewDocumentCommand{\wholelife}{O{} m}{\IfNoValueTF{#1}{A_{#2}}{{}^{#1}\!A_{#2}}}
+% Continuo
+\NewDocumentCommand{\wholelifec}{O{} m}{\IfNoValueTF{#1}{\bar{A}_{#2}}{{}^{#1}\!\bar{A}_{#2}}}
+% Discreto m-ésimo
+\NewDocumentCommand{\wholelifem}{O{} m m}{\IfNoValueTF{#1}{A_{#2}}{{}^{#1}\!A_{#2}^{(#3)}}}
+% Continuo m-ésimo
+\NewDocumentCommand{\wholelifemc}{O{} m m}{\IfNoValueTF{#1}{\bar{A}_{#2}}{{}^{#1}\!\bar{A}_{#2}^{(#3)}}}
+
+% ---------------------- Seguro temporal ---------------------
+
+% Discreto
+\NewDocumentCommand{\termins}{O{} m m}{\IfNoValueTF{#1}{\lcterm{A}{#2}{#3}}{{}^{#1}\!\lcterm{A}{#2}{#3}}}
+% Continuo
+\NewDocumentCommand{\terminsc}{O{} m m}{\IfNoValueTF{#1}{\lcterm{\bar{A}}{#2}{#3}}{{}^{#1}\!\lcterm{\bar{A}}{#2}{#3}}}
+
+% ----------------------- Seguro dotal -----------------------
+
+% Discreto
+\NewDocumentCommand{\insend}{O{} m m}{\IfNoValueTF{#1}{A_{#2:\lcroof{#3}}}{{}^{#1}\!A_{#2:\lcroof{#3}}}}
+% Continuo
+\NewDocumentCommand{\insendc}{O{} m m}{\IfNoValueTF{#1}{\bar{A}_{#2:\lcroof{#3}}}{{}^{#1}\!\bar{A}_{#2:\lcroof{#3}}}}
+% Dotal puro continuo
+\NewDocumentCommand{\pureend}{O{} m m}{\IfNoValueTF{#1}{\lcend{A}{#2}{#3}}{{}^{#1}\!\lcend{A}{#2}{#3}}}
+% Dotal puro continuo (nEx)
+\newcommand*{\pureendc}[2]{ {}_{#2}E_{#1} }
+
+% -------------- Seguro diferido temporal --------------------
+% Temporal continuo
+\NewDocumentCommand{\indifc}{O{} m m m}{\IfNoValueTF{#1}{{}_{#2}|\,\terminsc{#3}{#4}}{{}^{#1}{}_{#2}|\,\terminsc{#3}{#4}}}
+% Temporal discreto
+\NewDocumentCommand{\indif}{O{} m m m}{\IfNoValueTF{#1}{{}_{#2}|\,\termins{#3}{#4}}{{}^{#1}{}_{#2}|\,\termins{#3}{#4}}}
+
+% -------------- Seguro diferido completo --------------------
+
+% Completo continuo
+\NewDocumentCommand{\indifwholec}{O{} m m}{\IfNoValueTF{#1}{{}_{#2}|\,\wholelifec{#3}}{{}^{#1}{}_{#2}|\,\wholelifec{#3}}}
+% Completo discreto
+\NewDocumentCommand{\indifwhole}{O{} m m}{\IfNoValueTF{#1}{{}_{#2}|\,\wholelife{#3}}{{}^{#1}{}_{#2}|\,\wholelife{#3}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comandos de Anualidades
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% CIERTAS
+
+% Anualidad anticipada 
+\newcommand*{\annduenc}[1]{\ddot{a}_{\lcroof{#1}}}
+% Anualidad inmediata 
+\newcommand*{\annimmnc}[1]{a_{\lcroof{#1}}}
+% Anualidad continua 
+\newcommand*{\annconnc}[1]{\bar{a}_{\lcroof{#1}}}
+% Anualidad m-ésima anticipada 
+\newcommand*{\annmeduenc}[2]{\ddot{a}_{\lcroof{#1}}^{\prts{#2}}}
+% Anualidad prorrateada anticipada 
+\newcommand*{\annprduenc}[2]{\ddot{a}_{\lcroof{#1}}^{\corch{#2}}}
+% Anualidad m-ésima inmediata 
+\newcommand*{\annmeimmnc}[2]{a_{\lcroof{#1}}^{\prts{#2}}}
+% Anualidad prorrateada inmediata 
+\newcommand*{\annprimmnc}[2]{a_{\lcroof{#1}}^{\corch{#2}}}
+
+% VITALICIAS
+
+% Anualidad anticipada vida completa
+\newcommand*{\wholeanndue}[1]{\ddot{a}_{#1}}
+% Anualidad continua vida completa
+\newcommand*{\wholeanncon}[1]{\bar{a}_{#1}}
+% Anualidad vencida/inmediata vida completa
+\newcommand*{\wholeannimm}[1]{a_{#1}}
+% Anualidad m-ésima anticipada vida completa
+\newcommand*{\wholeannmedue}[2]{\ddot{a}_{#1}^{\prts{#2}}}
+% Anualidad prorrateada anticipada vida completa
+\newcommand*{\wholeannprdue}[2]{\ddot{a}_{#1}^{\corch{#2}}}
+% Anualidad m-ésima inmediata vida completa
+\newcommand*{\wholeannmeimm}[2]{a_{#1}^{\prts{#2}}}
+% Anualidad prorrateada inmediata vida completa
+\newcommand*{\wholeannprimm}[2]{a_{#1}^{\corch{#2}}}
+% Anualidad diferida anticipada vida completa
+\newcommand*{\wholeanndifedue}[2]{{}_{#1}|\ddot{a}_{#2}}
+% Anualidad diferida continua vida completa
+\newcommand*{\wholeanndifecon}[2]{{}_{#1}|\bar{a}_{#2}}
+% Anualidad diferida inmediata vida completa
+\newcommand*{\wholeanndifeimm}[2]{{}_{#1}|a_{#2}}
+
+% TEMPORALES
+
+% Anualidad temporal anticipada
+\newcommand*{\anndue}[2]{\ddot{a}_{#1:\lcroof{#2}}}
+% Anualidad temporal continua
+\newcommand*{\anncon}[2]{\bar{a}_{#1:\lcroof{#2}}}
+% Anualidad temporal vencida/inmediata 
+\newcommand*{\annimm}[2]{a_{#1:\lcroof{#2}}}
+% Anualidad m-ésima anticipada temporal
+\newcommand*{\annmedue}[3]{\ddot{a}_{#1:\lcroof{#2}}^{\prts{#3}}}
+% Anualidad prorrateada anticipada temporal
+\newcommand*{\annprdue}[3]{\ddot{a}_{#1:\lcroof{#2}}^{\corch{#3}}}
+% Anualidad m-ésima inmediata temporal
+\newcommand*{\annmeimm}[3]{a_{#1:\lcroof{#2}}^{\prts{#3}}}
+% Anualidad prorrateada inmediata temporal
+\newcommand*{\annprimm}[3]{a_{#1:\lcroof{#2}}^{\corch{#3}}}
+% Anualidad diferida anticipada temporal
+\newcommand*{\anndifedue}[3]{{}_{#1}|\ddot{a}_{#2:\lcroof{#3}}}
+% Anualidad diferida continua temporal
+\newcommand*{\anndifecon}[3]{{}_{#1}|\bar{a}_{#2:\lcroof{#3}}}
+% Anualidad diferida inmediata temporal
+\newcommand*{\anndifeimm}[3]{{}_{#1}|a_{#2:\lcroof{#3}}}
+% Anualidad garantizada
+\newcommand*{\anngaran}[2]{\ddot{a}_{\overline{#1:\lcroof{#2}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comandos de Primas
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%
+% Primas de Beneficio
+%%%%%%%%%%%%%%%%%%%%%
+
+% CASO DISCRETO
+
+% Seguro de vida entera
+\NewDocumentCommand{\Pwholelife}{O{} m}{\IfNoValueTF{#1}{P_{#2}}{{}_{#1}P_{#2}}}
+% Seguro temporal de $n$ años
+\NewDocumentCommand{\Ptermins}{O{} m m}{\IfNoValueTF{#1}{\lcterm{P}{#2}{#3}}{{}_{#1}\lcterm{P}{#2}{#3}}}
+% Seguro dotal de $n$ años
+\NewDocumentCommand{\Pinsend}{O{} m m}{\IfNoValueTF{#1}{P_{{#2}:\lcroof{#3}}}{{}_{#1}P_{{#2}:\lcroof{#3}}}}
+% Seguro dotal puro
+\NewDocumentCommand{\Ppureend}{O{} m m}{\IfNoValueTF{#1}{\lcend{P}{\!#2}{#3}}{{}_{#1}\lcend{P}{\!#2}{#3}}}
+% Seguro de vida completa diferido anticipado
+\NewDocumentCommand{\Pwholeanndifedue}{O{} m m}{\IfNoValueTF{#1}{P\prts{\wholeanndifedue{#2}{#3}}}{{}_{#1}P\prts{\wholeanndifedue{#2}{#3}}}}
+
+% CASO CONTINUO
+
+% Seguro de vida entera
+\NewDocumentCommand{\Pwholelifec}{O{} m}{\IfNoValueTF{#1}{\bar{P}\prts{\,\wholelifec{#2}}}{{}_{#1}\bar{P}\prts{\,\wholelifec{#2}}}}
+% Seguro temporal de $n$ años
+\NewDocumentCommand{\Pterminsc}{O{} m m}{\IfNoValueTF{#1}{\bar{P}\prts{\,\terminsc{#2}{#3}}}{{}_{#1}\bar{P}\prts{\,\terminsc{#2}{#3}}}}
+% Seguro dotal de $n$ años
+\NewDocumentCommand{\Pinsendc}{O{} m m}{\IfNoValueTF{#1}{\bar{P}\prts{\,\insendc{#2}{#3}}}{{}_{#1}\bar{P}\prts{\,\insendc{#2}{#3}}}}
+% Seguro dotal puro
+\NewDocumentCommand{\Ppureendc}{O{} m m}{\IfNoValueTF{#1}{\bar{P}\prts{\,\pureend{#2}{#3}}}{{}_{#1}\bar{P}\prts{\,\pureend{#2}{#3}}}}
+% Seguro de vida completa diferido anticipado
+\NewDocumentCommand{\Pwholeanndifeconc}{O{} m m}{\IfNoValueTF{#1}{\bar{P}\prts{\wholeanndifecon{#2}{#3}}}{{}_{#1}\bar{P}\prts{\wholeanndifecon{#2}{#3}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Primas de Beneficio pagaderas m-veces Verdaderas
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% CASO DISCRETO
+
+% Seguro de vida entera
+\NewDocumentCommand{\Pwholelifem}{O{} m m}{\IfNoValueTF{#1}{P_{#2}^{\prts{#3}}}{{}_{#1}P_{#2}^{\prts{#3}}}}
+% Seguro temporal de $n$ años
+\NewDocumentCommand{\Pterminsm}{O{} m m m}{\IfNoValueTF{#1}{{\lcterm{P}{#2}{#3}}^{\!\!\!\!\!\!\!(#4)}}{{}_{#1}{\lcterm{P}{#2}{#3}}^{\!\!\!\!\!\!\!(#4)}}}
+% Seguro dotal de $n$ años
+\NewDocumentCommand{\Pinsendm}{O{} m m m}{\IfNoValueTF{#1}{P_{{#2}:\lcroof{#3}}^{\prts{#4}}}{{}_{#1}P_{{#2}:\lcroof{#3}}^{\prts{#4}}}}
+
+% CASO CONTINUO
+
+% Seguro de vida entera
+\NewDocumentCommand{\Pwholelifecm}{O{} m m}{\IfNoValueTF{#1}{P^{\prts{#3}}\!\!\prts{\,\wholelifec{#2}}}{{}_{#1}P^{\prts{#3}}\!\!\prts{\,\wholelifec{#2}}}}
+% Seguro temporal de $n$ años
+\NewDocumentCommand{\Pterminscm}{O{} m m m}{\IfNoValueTF{#1}{P^{\prts{#4}}\!\!\prts{\,\terminsc{#2}{#3}}}{{}_{#1}P^{\prts{#4}}\!\!\prts{\,\terminsc{#2}{#3}}}}
+% Seguro dotal de $n$ años
+\NewDocumentCommand{\Pinsendcm}{O{} m m m}{\IfNoValueTF{#1}{P^{\prts{#4}}\!\!\prts{\,\insendc{#2}{#3}}}{{}_{#1}P^{\prts{#4}}\!\!\prts{\,\insendc{#2}{#3}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Primas de Beneficio pagaderas m-veces Prorrateadas
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% CASO DISCRETO
+
+% Seguro de vida entera
+\NewDocumentCommand{\Pwholelifep}{O{} m m}{\IfNoValueTF{#1}{P_{#2}^{\corch{#3}}}{{}_{#1}P_{#2}^{\corch{#3}}}}
+% Seguro temporal de $n$ años
+\NewDocumentCommand{\Pterminsp}{O{} m m m}{\IfNoValueTF{#1}{{\lcterm{P}{#2}{#3}}^{\!\!\!\!\!\!\corch{#4}}}{{}_{#1}{\lcterm{P}{#2}{#3}}^{\!\!\!\!\!\!\corch{#4}}}}
+% Seguro dotal de $n$ años
+\NewDocumentCommand{\Pinsendp}{O{} m m m}{\IfNoValueTF{#1}{P_{{#2}:\lcroof{#3}}^{\corch{#4}}}{{}_{#1}P_{{#2}:\lcroof{#3}}^{\corch{#4}}}}
+
+% CASO CONTINUO
+
+% Seguro de vida entera
+\NewDocumentCommand{\Pwholelifecp}{O{} m m}{\IfNoValueTF{#1}{P^{\corch{#3}}\!\!\prts{\,\wholelifec{#2}}}{{}_{#1}P^{\corch{#3}}\!\!\prts{\,\wholelifec{#2}}}}
+% Seguro temporal de $n$ años
+\NewDocumentCommand{\Pterminscp}{O{} m m m}{\IfNoValueTF{#1}{P^{\corch{#4}}\!\!\prts{\,\terminsc{#2}{#3}}}{{}_{#1}P^{\corch{#4}}\!\!\prts{\,\terminsc{#2}{#3}}}}
+% Seguro dotal de $n$ años
+\NewDocumentCommand{\Pinsendcp}{O{} m m m}{\IfNoValueTF{#1}{P^{\corch{#4}}\!\!\prts{\,\insendc{#2}{#3}}}{{}_{#1}P^{\corch{#4}}\!\!\prts{\,\insendc{#2}{#3}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comandos de Reservas
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% CASO DISCRETO
+
+% Seguro de vida entera
+\NewDocumentCommand{\Vwholelife}{m m}{ {}_{#1}V_{#2} }
+% Seguro temporal de n años
+\NewDocumentCommand{\Vtermins}{m m m}{ {}_{#1}V^1_{#2:\lcroof{#3}} }
+% Seguro dotal de n años
+\NewDocumentCommand{\Vinsend}{m m m}{ {}_{#1}V_{#2:\lcroof{#3}} }
+% Seguro dotal puro
+\NewDocumentCommand{\Vpureend}{m m m}{ {}_{#1}V^1_{#2:\lcroof{#3}} }
+% Seguro vida entera con h pagos (h es opcional)
+\NewDocumentCommand{\Vwholelifeh}{O{} m m}{ {}_{#2}^{#1}V_{#3} }
+% Seguro dotal con h pagos (h es opcional)
+\NewDocumentCommand{\Vinsendh}{O{} m m m}{ {}_{#2}^{#1}V_{#3:\lcroof{#4}} }
+% Anualidad vitalicia entera diferida
+\NewDocumentCommand{\Vwholeanndife}{m m m}{ {}_{#1}V\!\prts{{}_{#2|}\ddot{a}_{#3}} }
+
+% CASO CONTINUO
+
+% Seguro de vida entera
+\NewDocumentCommand{\Vwholelifec}{m m}{ {}_{#1}\bar{V}\!\prts{\bar{A}_{#2}} }
+% Seguro temporal de n años
+\NewDocumentCommand{\Vterminsc}{m m m}{ {}_{#1}\bar{V}\!\prts{\bar{A}^1_{#2:\lcroof{#3}}} }
+% Seguro dotal de n años
+\NewDocumentCommand{\Vinsendc}{m m m}{ {}_{#1}\bar{V}\!\prts{\bar{A}_{#2:\lcroof{#3}}} }
+% Seguro dotal puro
+\NewDocumentCommand{\Vpureendc}{m m m}{ {}_{#1}\bar{V}\!\prts{A^1_{#2:\lcroof{#3}}} }
+% Seguro vida entera con h pagos (h es opcional)
+\NewDocumentCommand{\Vwholelifehc}{O{} m m}{ {}_{#2}^{#1}\bar{V}\!\prts{\bar{A}_{#3}} }
+% Seguro dotal con h pagos (h es opcional)
+\NewDocumentCommand{\Vinsendhc}{O{} m m m}{ {}_{#2}^{#1}\bar{V}\!\prts{\bar{A}_{#3:\lcroof{#4}}} }
+% Anualidad vitalicia entera diferida
+\NewDocumentCommand{\Vwholeanndifecon}{m m m}{ {}_{#1}\bar{V}\!\prts{{}_{#2|}\bar{a}_{#3}} }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Conjuntos numéricos
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\N}{\mathbb{N}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Misceláneos
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\mid}{\,|\,}
+
+\newcommand{\restr}[1]{|_{#1}}
+\newcommand{\comillas}[1]{``#1''}
+\newcommand{\prts}[1]{\left(#1\right)}
+\newcommand{\corch}[1]{\left\{#1\right\}}
+\newcommand{\cuad}[1]{\left[#1\right]}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\Abs}[1]{\begin{vmatrix} #1 \end{vmatrix}}  
+\newcommand{\piso}[1]{\left\lfloor #1 \right\rfloor}  % Parte entera inferior
+\newcommand{\techo}[1]{\left\lceil #1 \right\rceil}   % Parte entera superior
+\newcommand{\implica}{$\implies$ }
+\newcommand{\va}{\textit{v.a} }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Probabilidad
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\var}[1]{\operatorname{Var}\left[#1\right]}
+\newcommand{\E}[1]{\mathbb{E} \left[#1\right]}
+\newcommand{\V}[1]{\mathbb{V} \left[#1\right]}
+\renewcommand{\P}[1]{\mathbb{P} \left[#1\right]}
+\newcommand{\cov}[2]{\operatorname{Cov}\left[#1, #2\right]}
+\newcommand{\Econd}[2]{\mathbb{E}\left[#1 \mid #2\right]}
+\newcommand{\varcond}[2]{\operatorname{Var}\left[#1 \mid #2\right]}
+\newcommand{\Pcond}[2]{\mathbb{P}\left[#1 \mid #2\right]}
+\newcommand{\indicadora}[1]{\mathds{1}_{#1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Convergencia de variables aleatorias
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\cs}{\xrightarrow{c.s}}
+\newcommand{\cp}{\xrightarrow{P}}
+\newcommand{\clp}{\xrightarrow{L^p}}
+\newcommand{\cl}[1]{\xrightarrow{L^{#1}}}
+\newcommand{\cd}{\xrightarrow{D}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Probabilidades de Contingencias
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand*{\tqx}[2]{\ifthenelse{\equal{#1}{1}}{q_{#2}}{{}_{#1}q_{#2}}}
+\newcommand*{\tpx}[2]{\ifthenelse{\equal{#1}{1}}{p_{#2}}{{}_{#1}p_{#2}}}
+\newcommand*{\tdx}[2]{\ifthenelse{\equal{#1}{1}}{d_{#2}}{{}_{#1}d_{#2}}}
+\newcommand*{\tLx}[2]{\ifthenelse{\equal{#1}{1}}{L_{#2}}{{}_{#1}L_{#2}}}
+\newcommand*{\tuqx}[3]{\ifthenelse{\equal{#2}{1}}{{}_{#1}|q_{#3}}{{}_{#1}|_{#2}q_{#3}}}
+
+%%%%%%%%%%%%%%%%%%%% Comandos de Estadística %%%%%%%%%%%%%%%%%%%%
+
+\NewDocumentCommand{\muestra}{o}{X_1, \ldots, X_{\IfValueTF{#1}{#1}{n}}}
+
+
