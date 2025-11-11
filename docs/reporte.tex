@@ -106,14 +106,25 @@ Mencione el propósito general del proyecto: evaluar la valoración y el riesgo 
 
 % ---------------- METODOLOGÍA ----------------
 \section{Metodología}
-Explique la construcción de los modelos binomiales conjuntos para colones y dólares, la generación de 10,000 simulaciones de Monte Carlo y los cálculos de VaR y CVaR.
-Incluya ecuaciones relevantes:
+
+% \subsubsection*{Justificación de la tasa de descuento (NIC 19) y uso de la curva soberana del BCCR}
+
+De conformidad con la NIC 19, la tasa de descuento debe estimarse con base en los rendimientos de mercado \emph{al cierre del ejercicio} para instrumentos de \emph{alta calidad} y en la \emph{misma moneda} y \emph{horizonte temporal} de las obligaciones. En economías donde no existe un mercado profundo de bonos corporativos de alta calidad en la moneda local, la práctica aceptada es utilizar la curva de rendimientos de \textbf{bonos soberanos} emitidos por el Gobierno en dicha moneda.
+
+Para este trabajo, la Compañía reporta bajo NIC 19 con fecha de corte {31/12/2024}. En Costa Rica, dado que no existe un mercado profundo de bonos corporativos de alta calidad en colones, se adopta como referencia la {Curva de Rendimientos Soberana en colones} publicada por el \textit{Banco Central de Costa Rica} (BCCR), seleccionando el punto de la curva que mejor corresponda con la \emph{duración/promedio de vencimiento} de los pagos del plan.
+
+Sea $t^\star$ la duración estimada (en años) del flujo de pagos de beneficios. Denotemos por $r_{\text{CRC}}(t)$ el rendimiento spot (cero cupón) de la curva soberana del BCCR en colones para plazo $t$. La tasa de descuento actuarial utilizada es entonces
 \[
-FX(VaR_p) = \Pr[X \leq VaR_p] = p
+\text{Tasa de descuento} \;=\; r_{\text{CRC}}(t^\star)\quad \text{evaluada al 31/12/2024}.
 \]
-\[
-CVaR_p(X) = E[X \mid X \geq VaR_p]
-\]
+Operativamente:
+\begin{enumerate}
+    \item Se estima $t^\star$ a partir del calendario esperado de pagos del plan (jubilación, renuncia, fallecimiento e invalidez).
+    \item Se consulta la Curva de Rendimientos Soberana en colones del BCCR (corte 31/12/2024) y se obtiene $r_{\text{CRC}}(t^\star)$.
+    \item Si $t^\star$ no coincide con un nodo publicado, se interpola sobre la curva (lineal o mediante el método indicado por el BCCR) para obtener la tasa puntual.
+\end{enumerate}
+
+Esta elección cumple simultáneamente con: (i) \textbf{moneda} consistente (colones), (ii) \textbf{plazo} consistente (alineado con $t^\star$), y (iii) \textbf{fecha de medición al cierre} (31/12/2024), tal como requiere la NIC 19. La tasa resultante se emplea para descontar a valor presente los flujos de beneficios proyectados y para los análisis de sensibilidad (p.\,ej., $\pm 100$~pb).
 
 % ---------------- RESULTADOS ----------------
 \section{Resultados}
