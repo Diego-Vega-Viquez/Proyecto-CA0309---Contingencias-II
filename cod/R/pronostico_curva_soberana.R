@@ -213,12 +213,9 @@ modelo_hw <- ets(serie_temporal)
 summary(modelo_hw)
 checkresiduals(modelo_hw)
 
+
 predicciones_hw <- forecast(modelo_hw, h=120)
 plot(predicciones_hw)
-
-modelo_arimax <- auto.arima(serie_temporal, xreg=datos$dias)
-summary(modelo_arimax)
-checkresiduals(modelo_arimax)
 
 fechas <- read_excel('../../data/curva_soberana.xlsx', sheet = 'proyeccion')
 fechas <- tail(fechas, 25974)
@@ -227,13 +224,20 @@ fechas <- fechas %>%
   filter(Fecha == max(Fecha)) %>%
   ungroup()
 
-fechas <- tail(fechas, 853)
 
-predicciones_arimax <- forecast(modelo_arimax, xreg=fechas$`Plazo en días`, h=12)
+fechas_train <- head(fechas, 118)
+fechas_test <- head(tail(fechas, 854),230)
+
+modelo_arimax <- auto.arima(head(serie_temporal,118), xreg=fechas_train$`Plazo en días`)
+summary(modelo_arimax)
+checkresiduals(modelo_arimax)
+
+predicciones_arimax <- forecast(modelo_arimax, xreg=fechas_test$`Plazo en días`, h=230)
 plot(predicciones_arimax)
 
 df_predicciones <- data.frame(
-  fecha = fechas$Fecha,
+  fecha = fechas_test$Fecha,
+  dias = fechas_test$`Plazo en días`,
   Tasa = predicciones_arimax$mean,  # Los valores predichos
   Lower_80 = predicciones_arimax$lower[,1],  # Límite inferior del intervalo de confianza al 80%
   Upper_80 = predicciones_arimax$upper[,1],  # Límite superior del intervalo de confianza al 80%
